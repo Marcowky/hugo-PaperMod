@@ -1,0 +1,7 @@
+{{- $hidden := slice }}
+{{- with site.Params.hiddenTags }}
+  {{- range . }}
+    {{- $hidden = $hidden | append (lower (printf "%v" .)) }}
+  {{- end }}
+{{- end }}
+{{- return $hidden }}

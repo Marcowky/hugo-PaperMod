@@ -43,9 +43,10 @@
   {{- end }}
 
   <footer class="post-footer">
-    {{- $tags := .Language.Params.Taxonomies.tag | default "tags" }}
+    {{- $tagData := partial "filtered_tags.html" . }}
+    {{- $terms := index $tagData "terms" }}
     <ul class="post-tags">
-      {{- range ($.GetTerms $tags) }}
+      {{- range $terms }}
       <li><a href="{{ .Permalink }}">{{ .LinkTitle }}</a></li>
       {{- end }}
     </ul>

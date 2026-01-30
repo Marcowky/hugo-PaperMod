@@ -1,0 +1,18 @@
+{{- $hidden := partial "hidden_tags.html" . }}
+{{- $paramsTags := slice }}
+{{- with .Params.tags }}
+  {{- range . }}
+    {{- $tag := printf "%v" . }}
+    {{- if not (in $hidden (lower $tag)) }}
+      {{- $paramsTags = $paramsTags | append $tag }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+{{- $tagsKey := (.Language.Params.Taxonomies.tag | default "tags") }}
+{{- $terms := slice }}
+{{- range ($.GetTerms $tagsKey) }}
+  {{- if not (in $hidden (lower .LinkTitle)) }}
+    {{- $terms = $terms | append . }}
+  {{- end }}
+{{- end }}
+{{- return (dict "hidden" $hidden "params" $paramsTags "terms" $terms) }}

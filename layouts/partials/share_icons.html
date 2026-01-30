@@ -1,11 +1,13 @@
 {{- $pageurl := .Permalink }}
 {{- $title := .Title }}
+{{- $tagData := partial "filtered_tags.html" . }}
+{{- $filteredTags := index $tagData "params" }}
 
 {{- $.Scratch.Set "tags" ""}}
 
-{{- with .Params.Tags }}
+{{- if gt (len $filteredTags) 0 }}
 {{- $hashtags := newScratch}}
-{{- range . }}{{ $hashtags.Add "tags" (slice (replaceRE "(\\s)" "" . ))}}{{end}}
+{{- range $filteredTags }}{{ $hashtags.Add "tags" (slice (replaceRE "(\\s)" "" . ))}}{{end}}
 {{- $.Scratch.Set "tags" (delimit ($hashtags.Get "tags") ",") }}
 {{- end -}}
 

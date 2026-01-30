@@ -60,6 +60,7 @@
 }
 </script>
 {{- if .IsPage }}
+{{- $tagData := partial "filtered_tags.html" . }}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -71,7 +72,8 @@
     {{- if .Params.keywords }}
     {{ range $i, $e := .Params.keywords }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}
     {{- else }}
-    {{ range $i, $e := .Params.tags }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}
+    {{- $paramsTags := index $tagData "params" -}}
+    {{ range $i, $e := $paramsTags }}{{ if $i }}, {{ end }}{{ $e }}{{ end }}
     {{- end }}
   ],
   "articleBody": {{ .Content | safeJS | htmlUnescape | plainify }},

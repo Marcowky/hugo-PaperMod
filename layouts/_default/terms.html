@@ -13,13 +13,21 @@
 
 <ul class="terms-tags">
     {{- $type := .Type }}
+    {{- $tagsKey := (.Language.Params.Taxonomies.tag | default "tags") | lower }}
+    {{- $applyHidden := (eq (lower $type) $tagsKey) }}
+    {{- $hidden := slice }}
+    {{- if $applyHidden }}
+    {{- $hidden = partial "hidden_tags.html" . }}
+    {{- end }}
     {{- range $key, $value := .Data.Terms.Alphabetical }}
     {{- $name := .Name }}
+    {{- if or (not $applyHidden) (not (in $hidden (lower $name))) }}
     {{- $count := .Count }}
     {{- with site.GetPage (printf "/%s/%s" $type $name) }}
     <li>
         <a href="{{ .Permalink }}">{{ .Name }} <sup><strong><sup>{{ $count }}</sup></strong></sup> </a>
     </li>
+    {{- end }}
     {{- end }}
     {{- end }}
 </ul>

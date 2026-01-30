@@ -28,7 +28,9 @@
   {{- with .Lastmod }}
     <meta property="article:modified_time" {{ .Format $ISO8601 | printf "content=%q" | safeHTMLAttr }}>
   {{- end }}
-  {{- range .GetTerms "tags" | first 6 }}
+  {{- $tagData := partial "filtered_tags.html" . }}
+  {{- $terms := index $tagData "terms" }}
+  {{- range $terms | first 6 }}
     <meta property="article:tag" content="{{ .Page.Title | plainify }}">
   {{- end }}
 {{- else }}
